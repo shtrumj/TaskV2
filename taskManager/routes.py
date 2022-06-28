@@ -39,6 +39,6 @@ def register():
     return render_template('register.html',form=form)
 
 
-@main.route('/home',methods=('GET','POST'))
+@main.route('/home', methods=('GET', 'POST'))
 def home():
     return render_template('home.html')

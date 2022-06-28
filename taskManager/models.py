@@ -21,10 +21,10 @@ class Users(db.Model, UserMixin):
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
-        self.password_hash = generate_password_hash(self.password_hash, password)
+        self.password_hash = generate_password_hash(password, 'sha256')
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return check_password_hash(password,'sha256')
 
 
 

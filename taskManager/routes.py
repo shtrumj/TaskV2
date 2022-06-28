@@ -32,8 +32,13 @@ def register():
         lastName = form.lastName.data
         email = form.email.data
         password = form.password.data
-        new_user = Users(firstName=firstName, lastName=lastName,email=email, password=password)
+        new_user = Users(firstName=firstName, lastName=lastName, email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('main.login'))
     return render_template('register.html',form=form)
+
+
+@main.route('/home',methods=('GET','POST'))
+def home():
+    return render_template('home.html')

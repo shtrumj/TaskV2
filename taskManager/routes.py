@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from taskManager.models import Users
 from taskManager.forms import UsersForm
+from taskManager import LoginManager
 from taskManager.extentions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 main = Blueprint('main', __name__, template_folder='taskManager/templates')
@@ -30,7 +31,7 @@ def register():
         firstName = form.firstName.data
         lastName = form.lastName.data
         email = form.email.data
-        password = generate_password_hash(form.password.data, 'sha256')
+        password = form.password.data
         new_user = Users(firstName=firstName, lastName=lastName,email=email, password=password)
         db.session.add(new_user)
         db.session.commit()

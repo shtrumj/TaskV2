@@ -1,19 +1,31 @@
-from .extentions import db
+from .extentions import db, login_manager
+from flask_login import UserMixin
+from wtforms import StringField, PasswordField, BooleanField
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
-class Users(db.Model):
+
+@login_manager.user_loader
+def load_users(user_id):
+    return Users.query.get(user_id)
+
+
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.TEXT)
     lastName = db.Column(db.TEXT)
-    email = db.Column(db.TEXT)
-    password = db.Column(db.TEXT)
-
+    email = db.Column(db.TEXT, unique=True)
+    password_hash = db.Column(db.TEXT)
 
     def __init__(self, firstName, lastName, email, password):
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
-        self.password = password
+        self.password_hash = generate_password_hash(self.password_hash, password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 
 
 class Employees(db.Model):

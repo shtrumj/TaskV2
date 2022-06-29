@@ -4,9 +4,8 @@ from wtforms import StringField, PasswordField, BooleanField
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-
 @login_manager.user_loader
-def load_users(user_id):
+def load_user(user_id):
     return Users.query.get(user_id)
 
 
@@ -24,8 +23,7 @@ class Users(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password, 'sha256')
 
     def check_password(self, password):
-        return check_password_hash(password,'sha256')
-
+        return check_password_hash(self.password_hash, password )
 
 
 class Employees(db.Model):

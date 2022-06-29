@@ -16,6 +16,5 @@ def create_app():
     migrate.init_app(app, db)
     app.register_blueprint(main)
     login_manager.init_app(app)
-    login_manager.login_view = 'login'
-
+    login_manager.login_view = 'main.login'
     return app

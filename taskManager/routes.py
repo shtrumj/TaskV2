@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
-from taskManager.models import Users
+from taskManager.models import Users, Customers
 from wtforms import ValidationError
 from flask_login import login_user, login_required,logout_user, current_user
 from taskManager.forms import Loginform, RegistrationForm, CustomersForm
@@ -58,5 +58,16 @@ def home():
 @main.route('/addCustomer', methods=('GET', 'POST'))
 def addCustomer():
     form = CustomersForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        city = form.city.data
+        address = form.address.data
+        internalDomain = form.internalDomain.data
+        externalDomain = form.externalDomain.data
+        owaAdd = form.owaadd.data
+        new_customer = Customers(name=name, city=city, address=address, internalDomain=internalDomain, externalDomain=externalDomain, owaAdd=owaAdd)
+        db.session.add(new_customer)
+        db.session.commit()
+
 
     return render_template('addcustomer.html', form=form)

@@ -37,6 +37,7 @@ class Employees(db.Model):
     lasName = db.Column(db.TEXT)
     email = db.Column(db.TEXT)
     phone = db.Column(db.TEXT)
+    customers = db.relationship('Customers', secondary=EmployeeSysadmin, backref='administrators')
 
     def __init__(self, firstName, lastName, email, phone):
         self.firsName = firstName

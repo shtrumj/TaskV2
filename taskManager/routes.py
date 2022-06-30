@@ -53,3 +53,7 @@ def register():
 @login_required
 def home():
     return render_template('home.html')
+
+@main.route('/addCustomer', methods=('GET', 'POST'))
+def addCustomer():
+    return render_template('addcustomer.html')

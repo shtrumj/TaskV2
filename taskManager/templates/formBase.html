@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Home {% endblock %}
+{% block title %}Form {% endblock %}
 
 {% block extracss %}
     <link href="../static/style.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <h1>בית</h1>
+    <h1>{% block heading %}בית{% endblock %}</h1>
     <div class="btn-group">
         <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown"

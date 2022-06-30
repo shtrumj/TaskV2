@@ -29,6 +29,12 @@ class CustomersForm(FlaskForm):
 
 
 
+class EmployeeForm(FlaskForm):
+    firstName = StringField("שם פרטי")
+    lastName = StringField("שם משפחה")
+    email = StringField("כתובת דואר אלקטרוני")
+    phone = StringField("מספר טלפון נייד")
+    submit = SubmitField('הוספת מנהל רשת')
 
     # def check_email(self, field):
     #     if Users.query.filter_by(email=field.data.first)

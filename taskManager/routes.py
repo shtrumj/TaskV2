@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
-from taskManager.models import Users, Customers
+from taskManager.models import Users, Customers, Employees
 from wtforms import ValidationError
 from flask_login import login_user, login_required,logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm
 from taskManager.extentions import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 main = Blueprint('main', __name__, template_folder='taskManager/templates', static_folder='taskManager/static')
@@ -68,6 +68,18 @@ def addCustomer():
         new_customer = Customers(name=name, city=city, address=address, internalDomain=internalDomain, externalDomain=externalDomain, owaAdd=owaAdd)
         db.session.add(new_customer)
         db.session.commit()
-
-
     return render_template('addcustomer.html', form=form)
+
+
+@main.route('/addEmployee', methods=('GET', 'POST'))
+def addEmployee():
+    form = EmployeeForm()
+    if form.validate_on_submit():
+        firstName = form.firtsName.data
+        lastName = form.lastName.data
+        email = form.email.data
+        phone = form.phone.data
+        new_employee = Employees(firstName=firstName, lastName=lastName, email=email, phone=phone)
+        db.session.add(new_employee)
+        db.session.commit()
+    return render_template('addsysadmin.html', form=form)

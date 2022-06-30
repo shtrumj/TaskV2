@@ -25,6 +25,8 @@ class CustomersForm(FlaskForm):
     internalDomain = StringField("דומיין פנימי")
     externalDomain = StringField("דומיין חיצוני")
     owaadd = StringField("כתובת OWA")
+    submit = SubmitField('יצירת לקוח')
+
 
 
 

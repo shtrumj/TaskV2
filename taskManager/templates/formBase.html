@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Form {% endblock %}
 
-{% block extracss %}
-    <link href="../static/style.css" rel="stylesheet">
-{% endblock %}
+{#{% block extracss %}#}
+{#    <link href="../static/style.css" rel="stylesheet">#}
+{#{% endblock %}#}
 
-{% block content %}
     <h1>{% block heading %}בית{% endblock %}</h1>
+    {% block menu %}
     <div class="btn-group">
         <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown"
@@ -19,12 +19,14 @@
             </ul>
         </div>
     </div>
-{#            <div class="h-100 d-flex align-items-end flex-column flex-md-row  text-center text-md-end justify-content-end py-4 px-4 px-xl-5 bg-primary">#}
-
+        {% endblock menu %}
+        {% block content %}
+        {%  endblock content %}
+{% block footer %}
     <div id="footer" class="h-100 d-flex flex-column justify-content-end text-md-end  py-4 px-4 px-xl-5 bg-primary">
             <!-- Copyright -->
         <div class="text-white mb-3 mb-md-0">
                 Copyright SG-tech© 2022. All rights reserved.
         </div>
     </div>
-{% endblock content %}
+    {%  endblock footer %}

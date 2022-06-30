@@ -5,7 +5,7 @@ from flask_login import login_user, login_required,logout_user, current_user
 from taskManager.forms import Loginform, RegistrationForm
 from taskManager.extentions import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-main = Blueprint('main', __name__, template_folder='taskManager/templates')
+main = Blueprint('main', __name__, template_folder='taskManager/templates', static_folder='taskManager/static')
 
 
 @main.route('/', methods=('GET', 'POST'))

@@ -24,7 +24,7 @@ def login():
         if user:
             flash('התחברות בוצעה בהצלחה', category='success')
             login_user(user, remember=True)
-            return redirect(url_for('main.home'))
+            return render_template('home.html')
 
     return render_template('login.html', form=form, user=user, password=password)
 

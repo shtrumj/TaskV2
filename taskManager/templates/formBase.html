@@ -5,8 +5,8 @@
 {#<link href="../static/style.css" rel="stylesheet">#}
 {#{% endblock %}#}
 
-    <h1>{% block heading %}בית{% endblock %}</h1>
-    {% block menu %}
+<h1>{% block heading %}בית{% endblock %}</h1>
+{% block menu %}
     <div class="btn-group">
         <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown"
@@ -19,14 +19,14 @@
             </ul>
         </div>
     </div>
-        {% endblock menu %}
-        {% block content %}
-        {%  endblock content %}
+{% endblock menu %}
+{% block content %}
+{% endblock content %}
 {% block footer %}
     <div id="footer" class="h-100 d-flex flex-column justify-content-end text-md-end  py-4 px-4 px-xl-5 bg-primary">
-            <!-- Copyright -->
+        <!-- Copyright -->
         <div class="text-white mb-3 mb-md-0">
-                Copyright SG-tech© 2022. All rights reserved.
+            Copyright SG-tech© 2022. All rights reserved.
         </div>
     </div>
-    {%  endblock footer %}
+{% endblock footer %}

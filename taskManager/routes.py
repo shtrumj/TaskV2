@@ -25,6 +25,9 @@ def login():
             flash('התחברות בוצעה בהצלחה', category='success')
             login_user(user, remember=True)
             return render_template('home.html')
+        else:
+            flash('שם משתמש וֿ.או ססמא לא נכונים', category='danger')
+            return redirect(url_for('main.login'))
 
     return render_template('login.html', form=form, user=user, password=password)
 

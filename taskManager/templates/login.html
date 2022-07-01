@@ -8,6 +8,9 @@
 {% block content %}
 
     <h1>כניסה </h1>
+{% for mess in get_flashed_messages() %}
+
+    {%  endfor %}
 
     <section class="vh-100">
         <div class="container-fluid h-custom">

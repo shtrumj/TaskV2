@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField
-
 from wtforms.validators import DataRequired, length, EqualTo, Email
+from taskManager.extentions import db
+from wtforms_sqlalchemy.fields import QuerySelectField
+from taskManager.models import customer_query, assigners_query
+import taskManager.routes
 
 
 class Loginform(FlaskForm):
@@ -37,10 +40,15 @@ class EmployeeForm(FlaskForm):
     submit = SubmitField('הוספת מנהל רשת')
 
 
+
+
+
 class TasksForm(FlaskForm):
     assignTo = StringField('מבצע משימה')
     description = StringField('תאור המשימה')
-    customer = StringField('שם הלקוח')
+    # customer = StringField('שם הלקוח')
+    customer = QuerySelectField('שם הלקוח',query_factory=customer_query, allow_blank=False)
     deadline = DateField('תאריך יעד')
-    reportTo = StringField('ממנה משימה')
+    reportTo = QuerySelectField('ממנה משימה', query_factory=assigners_query, allow_blank=False)
+    # reportTo = StringField('ממנה משימה')
     submit = SubmitField('צור משימה')

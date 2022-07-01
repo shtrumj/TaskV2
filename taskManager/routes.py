@@ -82,7 +82,7 @@ def addCustomer():
 def addEmployee():
     form = EmployeeForm()
     if form.validate_on_submit():
-        firstName = form.firtsName.data
+        firstName = form.firstName.data
         lastName = form.lastName.data
         email = form.email.data
         phone = form.phone.data

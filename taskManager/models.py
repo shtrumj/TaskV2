@@ -2,7 +2,7 @@ from .extentions import db, login_manager
 from flask_login import UserMixin
 from wtforms import StringField, PasswordField, BooleanField
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -34,8 +34,8 @@ class Users(db.Model, UserMixin):
 
 class Employees(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    firsName = db.Column(db.TEXT)
-    lasName = db.Column(db.TEXT)
+    firstName = db.Column(db.TEXT)
+    lastName = db.Column(db.TEXT)
     email = db.Column(db.TEXT)
     phone = db.Column(db.TEXT)
     customers = db.relationship('Customers', secondary=EmployeeSysadmin, backref='administrators')
@@ -45,6 +45,9 @@ class Employees(db.Model):
         self.lasName = lastName
         self.email = email
         self.phone = phone
+
+    def __repr__(self):
+        return self.firsName, self.lasName
 
 
 class Customers(db.Model):
@@ -64,6 +67,9 @@ class Customers(db.Model):
         self.externalDomain = externalDomain
         self.owaAdd = owaAdd
 
+    def __repr__(self):
+        return self.name
+
 
 class Tasks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -79,3 +85,9 @@ class Tasks(db.Model):
         self.reportTo = reportTo
 
 
+def customer_query():
+    return db.session.query(Customers).all()
+
+
+def assigners_query():
+    return db.session.query(Employees).all()

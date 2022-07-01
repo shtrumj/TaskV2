@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from taskManager.models import Users, Customers, Employees
 from wtforms import ValidationError
-from flask_login import login_user, login_required,logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm
+from flask_login import login_user, login_required, logout_user, current_user
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm
 from taskManager.extentions import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
+
 main = Blueprint('main', __name__, template_folder='taskManager/templates', static_folder='taskManager/static')
 
 
@@ -32,7 +33,7 @@ def login():
     return render_template('login.html', form=form, user=user, password=password)
 
 
-@main.route('/reg',methods=('GET','POST'))
+@main.route('/reg', methods=('GET', 'POST'))
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -41,16 +42,17 @@ def register():
         email = form.email.data
         password = form.password.data
         pass_confirm = form.pass_confirm.data
-        def check_email(self,field):
+
+        def check_email(self, field):
             if Users.query.filter_by(email=field.data).first():
                 raise ValidationError('דואר אלקטרוני קיים במערכת')
 
         new_user = Users(firstName=firstName, lastName=lastName, email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
-        flash('משתמש נוצר בהצלחה!',category='success')
+        flash('משתמש נוצר בהצלחה!', category='success')
         return redirect(url_for('main.login'))
-    return render_template('register.html',form=form)
+    return render_template('register.html', form=form)
 
 
 @main.route('/home', methods=('GET', 'POST'))
@@ -69,7 +71,8 @@ def addCustomer():
         internalDomain = form.internalDomain.data
         externalDomain = form.externalDomain.data
         owaAdd = form.owaadd.data
-        new_customer = Customers(name=name, city=city, address=address, internalDomain=internalDomain, externalDomain=externalDomain, owaAdd=owaAdd)
+        new_customer = Customers(name=name, city=city, address=address, internalDomain=internalDomain,
+                                 externalDomain=externalDomain, owaAdd=owaAdd)
         db.session.add(new_customer)
         db.session.commit()
     return render_template('addcustomer.html', form=form)
@@ -87,3 +90,18 @@ def addEmployee():
         db.session.add(new_employee)
         db.session.commit()
     return render_template('addsysadmin.html', form=form)
+
+
+@main.route('/addTask', methods=('GET', 'POST'))
+def addTask():
+    form = TasksForm()
+    if form.validate_on_submit():
+        assignTo = form.assignTo.data
+        description = form.description.data
+        customer = form.customer.data
+        deadline = form.deadline.data
+        reportTo = form.reportTo.data
+        new_task = Employees(description=description, customer=customer, deadline=deadline, reportTo=reportTo)
+        db.session.add(new_task)
+        db.session.commit()
+    return render_template('addtask.html', form=form)

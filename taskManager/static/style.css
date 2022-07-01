@@ -34,9 +34,13 @@ body{
     margin-top: auto;
     flex-shrink: 0;
 }
-.btn .btn-primary dropdown-items a.dropdown-menu .dropdown-toggle{
+.btn .btn-primary dropdown-items a.dropdown-menu .dropdown-toggle input[type="date"]{
     text-align: right;
+    direction: rtl;
 }
 a.dropdown-item{
     text-align: right;
+}
+input[type="date"]{
+    width: auto;
 }

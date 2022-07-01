@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, PasswordField, EmailField, DateTimeField
+from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField
+
 from wtforms.validators import DataRequired, length, EqualTo, Email
 
 
@@ -37,8 +38,9 @@ class EmployeeForm(FlaskForm):
 
 
 class TasksForm(FlaskForm):
+    assignTo = StringField('מבצע משימה')
     description = StringField('תאור המשימה')
     customer = StringField('שם הלקוח')
-    deadline = DateTimeField('תאריך יעד')
-    deadline = StringField('ממנה משימה')
+    deadline = DateField('תאריך יעד')
+    reportTo = StringField('ממנה משימה')
     submit = SubmitField('צור משימה')

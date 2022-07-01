@@ -1,0 +1,16 @@
+{% extends'formBase.html' %}
+{% block menu %}
+    <div class="btn-group menu">
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                המשימות שלי
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdown">
+                <li><a class="dropdown-item" href="#">הלקוחות שלי</a></li>
+                <li><a class="dropdown-item" href="#">סיכומי ביקור</a></li>
+                <li><a class="dropdown-item" href="#">התנתקות</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock menu %}

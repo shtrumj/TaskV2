@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, PasswordField, EmailField
+from wtforms import SubmitField, StringField, PasswordField, EmailField, DateTimeField
 from wtforms.validators import DataRequired, length, EqualTo, Email
 
 
@@ -28,7 +28,6 @@ class CustomersForm(FlaskForm):
     submit = SubmitField('יצירת לקוח')
 
 
-
 class EmployeeForm(FlaskForm):
     firstName = StringField("שם פרטי")
     lastName = StringField("שם משפחה")
@@ -36,5 +35,10 @@ class EmployeeForm(FlaskForm):
     phone = StringField("מספר טלפון נייד")
     submit = SubmitField('הוספת מנהל רשת')
 
-    # def check_email(self, field):
-    #     if Users.query.filter_by(email=field.data.first)
+
+class TasksForm(FlaskForm):
+    description = StringField('תאור המשימה')
+    customer = StringField('שם הלקוח')
+    deadline = DateTimeField('תאריך יעד')
+    deadline = StringField('ממנה משימה')
+    submit = SubmitField('צור משימה')

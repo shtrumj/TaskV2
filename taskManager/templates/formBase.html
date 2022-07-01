@@ -6,22 +6,8 @@
 {#{% endblock %}#}
 
 <h1>{% block heading %}בית{% endblock %}</h1>
-{% block menu %}
-    <div class="btn-group">
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                המשימות שלי
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdown">
-                <li><a class="dropdown-item" href="#">הלקוחות שלי</a></li>
-                <li><a class="dropdown-item" href="#">סיכומי ביקור</a></li>
-            </ul>
-        </div>
-    </div>
-{% endblock menu %}
-{% block content %}
-{% endblock content %}
+{% block menu %}{% endblock menu %}
+{% block content %}{% endblock content %}
 {% block footer %}
     <div id="footer" class="h-100 d-flex flex-column justify-content-end text-md-end  py-4 px-4 px-xl-5 bg-primary">
         <!-- Copyright -->

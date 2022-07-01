@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from wtforms import StringField, PasswordField, BooleanField
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(user_id)
@@ -64,9 +65,17 @@ class Customers(db.Model):
         self.owaAdd = owaAdd
 
 
-# class Tasks(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     description = db.Column(db.String(20))
-#     customer = db.
+class Tasks(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(20))
+    customer = db.Column(db.String(100))
+    deadline = db.Column(db.DateTime)
+    reportTo = db.String(db.String(20))
+
+    def __init__(self, description, customer, deadline, reportTo):
+        self.description = description
+        self.customer = customer
+        self.deadline = deadline
+        self.reportTo = reportTo
 
 

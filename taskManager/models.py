@@ -41,13 +41,13 @@ class Employees(db.Model):
     customers = db.relationship('Customers', secondary=EmployeeSysadmin, backref='administrators')
 
     def __init__(self, firstName, lastName, email, phone):
-        self.firsName = firstName
-        self.lasName = lastName
+        self.firstName = firstName
+        self.lastName = lastName
         self.email = email
         self.phone = phone
 
     def __repr__(self):
-        return self.firsName, self.lasName
+        return self.firstName + ' ' + self.lastName
 
 
 class Customers(db.Model):
@@ -78,7 +78,8 @@ class Tasks(db.Model):
     deadline = db.Column(db.DateTime)
     reportTo = db.String(db.String(20))
 
-    def __init__(self, description, customer, deadline, reportTo):
+    def __init__(self, assignTo, description, customer, deadline, reportTo):
+        self.assignTo = assignTo
         self.description = description
         self.customer = customer
         self.deadline = deadline
@@ -86,8 +87,16 @@ class Tasks(db.Model):
 
 
 def customer_query():
-    return db.session.query(Customers).all()
+    query = db.session.query(Customers).all()
+    return query
 
 
-def assigners_query():
-    return db.session.query(Employees).all()
+def employees_names_query():
+    query = db.session.query(Employees).all()
+    return query
+
+
+def bosses_names_query():
+    query = db.session.query(Employees).all()
+    return query
+

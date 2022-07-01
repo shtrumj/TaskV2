@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
-from taskManager.models import Users, Customers, Employees
+from taskManager.models import Users, Customers, Employees, Tasks
 from wtforms import ValidationError
 from flask_login import login_user, login_required, logout_user, current_user
 from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm
@@ -95,13 +95,16 @@ def addEmployee():
 @main.route('/addTask', methods=('GET', 'POST'))
 def addTask():
     form = TasksForm()
+    form.assignTo.choices = [(assginTo.id, assginTo.firstName) for assginTo in Employees.query.all()]
+    form.customer.choices = [(customer.id, customer.name) for customer in Customers.query.all()]
+    form.reportTo.choices = [(reportTo.id, reportTo.firstName) for reportTo in Employees.query.all()]
     if form.validate_on_submit():
-        assignTo = form.assignTo.data
         description = form.description.data
         customer = form.customer.data
         deadline = form.deadline.data
         reportTo = form.reportTo.data
-        new_task = Employees(description=description, customer=customer, deadline=deadline, reportTo=reportTo)
+        assignTo = form.assignTo.data
+        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo )
         db.session.add(new_task)
         db.session.commit()
     return render_template('addtask.html', form=form)

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash
+from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from taskManager.models import Users, Customers, Employees, Tasks
 from wtforms import ValidationError
 from flask_login import login_user, login_required, logout_user, current_user
@@ -26,7 +26,8 @@ def login():
         if user:
             flash('התחברות בוצעה בהצלחה', category='success')
             login_user(user, remember=True)
-            return render_template('home.html')
+            # session['username'] = user
+            return render_template('home.html', user=user)
         else:
             flash('שם משתמש וֿ.או ססמא לא נכונים', category='danger')
             return redirect(url_for('main.login'))
@@ -59,6 +60,9 @@ def register():
 @main.route('/home', methods=('GET', 'POST'))
 @login_required
 def home():
+    if "username" in session:
+        username = session["username"]
+        return f"<h1>{username}</h1>"
     return render_template('home.html')
 
 
@@ -76,7 +80,7 @@ def addCustomer():
                                  externalDomain=externalDomain, owaAdd=owaAdd)
         db.session.add(new_customer)
         db.session.commit()
-        flash('לקוח נוצר בהצלחה!')
+        flash('לקוח נוצר בהצלחה!', category='success')
         return redirect(url_for('main.addCustomer'))
     return render_template('addcustomer.html', form=form)
 
@@ -88,31 +92,41 @@ def addEmployee():
         firstName = form.firstName.data
         lastName = form.lastName.data
         email = form.email.data
-        phone = form.phone.data
-        new_employee = Employees(firstName=firstName, lastName=lastName, email=email, phone=phone)
-        db.session.add(new_employee)
-        db.session.commit()
-        flash('עובד נוצר בהצלחה!')
-        return redirect(url_for('main.addEmployee'))
+        if db.session.query(Employees.email).filter_by(email=email).first():
+            flash ("Email Already registered", category="danger")
+            return redirect(url_for('main.addEmployee'))
+        else:
+            phone = form.phone.data
+            new_employee = Employees(firstName=firstName, lastName=lastName, email=email, phone=phone)
+            db.session.add(new_employee)
+            db.session.commit()
+            flash('עובד נוצר בהצלחה!', category='success')
+            return redirect(url_for('main.addEmployee'))
     return render_template('addsysadmin.html', form=form)
 
 
 @main.route('/addTask', methods=('GET', 'POST'))
 def addTask():
     form = TasksForm()
-    # form.assignTo.choices = [(assginTo.id, assginTo.firstName) for assginTo in Employees.query.all()]
-    # form.customer.choices = [(customer.id, customer.name) for customer in Customers.query.all()]
-    # form.reportTo.choices = [(reportTo.id, reportTo.firstName) for reportTo in Employees.query.all()]
-    assignQuery = Employees.query.order_by(Employees.firstName).all()
+    # assignQuery = Employees.query.order_by(Employees.firstName).all()
     if form.validate_on_submit():
         # return '<h1>{}</h1>'.format(form.assignTo.data)
-        description = form.description.data
+        description = str(form.description.data)
         customer = str(form.customer.data)
         deadline = str(form.deadline.data)
         reportTo = str(form.reportTo.data)
         assignTo = str(form.assignTo.data)
         new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo)
-        #return '<h1>{}-{}-{}-{}-{}</h1>'.format(description, customer, deadline, reportTo, assignTo)
+        #return '<h1>Report to: {} </h1>'.format(reportTo)
         db.session.add(new_task)
         db.session.commit()
-    return render_template('addtask.html', form=form )
+        flash('משימה נוצרה בהצלחה!', category='success')
+        return redirect(url_for('main.addTask'))
+    return render_template('addtask.html', form=form)
+
+
+@main.route('/logout')
+def logout():
+    logout_user()
+    flash("בוצעה התנתקות", category="success")
+    return redirect(url_for('main.login'))

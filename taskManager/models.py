@@ -4,6 +4,12 @@ from wtforms import StringField, PasswordField, BooleanField
 from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms_sqlalchemy.fields import QuerySelectField
 
+
+def employees_names_query():
+    query = Employees.query.all()
+    return query
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(user_id)
@@ -36,7 +42,7 @@ class Employees(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstName = db.Column(db.TEXT)
     lastName = db.Column(db.TEXT)
-    email = db.Column(db.TEXT)
+    email = db.Column(db.String(25), unique=True)
     phone = db.Column(db.TEXT)
     customers = db.relationship('Customers', secondary=EmployeeSysadmin, backref='administrators')
 
@@ -71,18 +77,13 @@ class Customers(db.Model):
         return self.name
 
 
-def employees_names_query():
-    query = Employees.query.all()
-    return query
-
-
 class Tasks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     assignTo = db.Column(db.String(20))
     description = db.Column(db.String(20))
     customer = db.Column(db.String(100))
     deadline = db.Column(db.String(12))
-    reportTo = db.String(db.String(20))
+    reportTo = db.Column(db.String(20))
 
     def __init__(self, assignTo, description, customer, deadline, reportTo):
         self.assignTo = assignTo
@@ -97,10 +98,6 @@ def customer_query():
     return query
 
 
-
-
-
 def bosses_names_query():
     query = db.session.query(Employees).all()
     return query
-

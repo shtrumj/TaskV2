@@ -15,8 +15,8 @@ class Loginform(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    firstName = StringField("שם פרטי(באנגלית)")
-    lastName = StringField("שם משפחה(באנגלית)")
+    firstName = StringField("שם פרטי")
+    lastName = StringField("שם משפחה")
     email = StringField("כתובת דואר אלקטרוני")
     password = PasswordField('סיסמא',
                              validators=[DataRequired(), EqualTo('pass_confirm', message='ססמאות חייבות להיות זהות')])

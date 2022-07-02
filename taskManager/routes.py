@@ -26,6 +26,7 @@ def login():
         if user.check_password(password) and user is not None:
             flash('התחברות בוצעה בהצלחה', category='success')
             login_user(user, remember=False)
+            session['username'] = user.firstName
             next = request.args.get('next')
             if next == None or not next[0]=='/':
                 flash('נא להתחבר!', category='danger')
@@ -65,7 +66,10 @@ def register():
 @main.route('/home', methods=('GET', 'POST'))
 @login_required
 def home():
-    return render_template('home.html')
+    if 'username' in session:
+        username = session['username']
+
+    return render_template('home.html',user=username)
 
 
 @main.route('/addCustomer', methods=('GET', 'POST'))

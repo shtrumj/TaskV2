@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint
+from flask_session import Session
 from flask_migrate import Migrate
 from .extentions import db, migrate, login_manager
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
@@ -16,5 +17,8 @@ def create_app():
     migrate.init_app(app, db)
     app.register_blueprint(main)
     login_manager.init_app(app)
+    app.config["SESSION_PERMANENT"] = False
+    app.config["SESSION_TYPE"] = "filesystem"
+    Session(app)
     login_manager.login_view = 'main.login'
     return app

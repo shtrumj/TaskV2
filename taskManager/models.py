@@ -45,6 +45,7 @@ class Employees(db.Model):
     email = db.Column(db.String(25), unique=True)
     phone = db.Column(db.TEXT)
     customers = db.relationship('Customers', secondary=EmployeeSysadmin, backref='administrators')
+    tasks = db.relationship('Tasks', backref='employee', lazy=True)
 
     def __init__(self, firstName, lastName, email, phone):
         self.firstName = firstName
@@ -84,13 +85,15 @@ class Tasks(db.Model):
     customer = db.Column(db.String(100))
     deadline = db.Column(db.String(12))
     reportTo = db.Column(db.String(20))
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=False)
 
-    def __init__(self, assignTo, description, customer, deadline, reportTo):
+    def __init__(self, assignTo, description, customer, deadline, reportTo, employee_id):
         self.assignTo = assignTo
         self.description = description
         self.customer = customer
         self.deadline = deadline
         self.reportTo = reportTo
+        self.employee_id = employee_id
 
 
 def customer_query():

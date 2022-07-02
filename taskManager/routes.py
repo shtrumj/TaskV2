@@ -28,6 +28,8 @@ def login():
             flash('התחברות בוצעה בהצלחה', category='success')
             login_user(user, remember=False)
             session["username"] = user.firstName
+            session["email"] = user.email
+            session["userid"] = user.id
             next = request.args.get('next')
             if next == None or not next[0]=='/':
                 flash('נא להתחבר!', category='danger')
@@ -69,8 +71,10 @@ def register():
 def home():
     if 'username' in session:
         username = session['username']
+        email = session['email']
+        table = Tasks.query.filter_by(assignTo=username).all()
 
-    return render_template('home.html',user=username)
+    return render_template('home.html', user=username, table=table)
 
 
 @main.route('/addCustomer', methods=('GET', 'POST'))
@@ -113,6 +117,7 @@ def addEmployee():
 
 
 @main.route('/addTask', methods=('GET', 'POST'))
+@login_required
 def addTask():
     form = TasksForm()
     # assignQuery = Employees.query.order_by(Employees.firstName).all()
@@ -122,8 +127,15 @@ def addTask():
         customer = str(form.customer.data)
         deadline = str(form.deadline.data)
         reportTo = str(form.reportTo.data)
-        assignTo = str(form.assignTo.data)
-        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo)
+        assignTo = form.assignTo.data
+        employee_id = db.session.query(Employees.id).filter_by(id = assignTo.id).first()
+        typ2e = type(employee_id)
+        return '<h1>{}</h1>'.format(typ2e)
+
+        return '<h1>{}</h1>'.format(employee_id)
+        assignTo = str(assignTo)
+        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo, employee_id=employee_id)
+        #return '<h1>{}</h1>'.format(assignTo.id)
         #return '<h1>Report to: {} </h1>'.format(reportTo)
         db.session.add(new_task)
         db.session.commit()

@@ -4,9 +4,11 @@ from flask_migrate import Migrate
 from .extentions import db, migrate, login_manager
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 from taskManager.routes import main
+from taskManager.tests import tests
 import os
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
+
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +19,7 @@ def create_app():
     migrate.init_app(app, db)
     app.register_blueprint(main)
     login_manager.init_app(app)
+    app.register_blueprint(tests)
     app.config["SESSION_PERMANENT"] = False
     app.config["SESSION_TYPE"] = "filesystem"
     Session(app)

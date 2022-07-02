@@ -4,6 +4,7 @@ from wtforms import ValidationError
 from flask_login import login_user, login_required, logout_user, current_user
 from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm
 from taskManager.extentions import db, login_manager
+from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms_sqlalchemy.fields import QuerySelectField
 
@@ -26,7 +27,7 @@ def login():
         if user.check_password(password) and user is not None:
             flash('התחברות בוצעה בהצלחה', category='success')
             login_user(user, remember=False)
-            session['username'] = user.firstName
+            session["username"] = user.firstName
             next = request.args.get('next')
             if next == None or not next[0]=='/':
                 flash('נא להתחבר!', category='danger')

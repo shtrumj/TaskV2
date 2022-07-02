@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField, SelectField
 from wtforms.validators import DataRequired, length, EqualTo, Email
 from .extentions import db
+from taskManager.models import employees_names_query
 from wtforms_sqlalchemy.fields import QuerySelectField
 from taskManager.models import customer_query, employees_names_query, bosses_names_query
 import taskManager.routes
@@ -41,10 +42,18 @@ class EmployeeForm(FlaskForm):
     submit = SubmitField('הוספת מנהל רשת')
 
 
+# class TasksForm(FlaskForm):
+#     assignTo = SelectField('אחראי משימה', choices=[])
+#     description = StringField('תאור המשימה')
+#     customer = SelectField('שם הלקוח', choices=[])
+#     deadline = DateField('תאריך יעד')
+#     reportTo = SelectField('ממנה משימה', choices=[])
+#     submit = SubmitField('צור משימה')
+
 class TasksForm(FlaskForm):
-    assignTo = SelectField('אחראי משימה', choices=[])
+    assignTo = QuerySelectField('אחראי משימה' ,query_factory=employees_names_query, allow_blank=True)
     description = StringField('תאור המשימה')
-    customer = SelectField('שם הלקוח', choices=[])
+    customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
     deadline = DateField('תאריך יעד')
-    reportTo = SelectField('ממנה משימה', choices=[])
+    reportTo = QuerySelectField('ממנה משימה', query_factory=bosses_names_query, allow_blank=True)
     submit = SubmitField('צור משימה')

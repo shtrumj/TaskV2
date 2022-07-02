@@ -71,11 +71,17 @@ class Customers(db.Model):
         return self.name
 
 
+def employees_names_query():
+    query = Employees.query.all()
+    return query
+
+
 class Tasks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    assignTo = db.Column(db.String(20))
     description = db.Column(db.String(20))
     customer = db.Column(db.String(100))
-    deadline = db.Column(db.DateTime)
+    deadline = db.Column(db.String(12))
     reportTo = db.String(db.String(20))
 
     def __init__(self, assignTo, description, customer, deadline, reportTo):
@@ -91,9 +97,7 @@ def customer_query():
     return query
 
 
-def employees_names_query():
-    query = db.session.query(Employees).all()
-    return query
+
 
 
 def bosses_names_query():

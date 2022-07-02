@@ -5,6 +5,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm
 from taskManager.extentions import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 main = Blueprint('main', __name__, template_folder='taskManager/templates', static_folder='taskManager/static')
 
@@ -75,6 +76,8 @@ def addCustomer():
                                  externalDomain=externalDomain, owaAdd=owaAdd)
         db.session.add(new_customer)
         db.session.commit()
+        flash('לקוח נוצר בהצלחה!')
+        return redirect(url_for('main.addCustomer'))
     return render_template('addcustomer.html', form=form)
 
 
@@ -89,22 +92,27 @@ def addEmployee():
         new_employee = Employees(firstName=firstName, lastName=lastName, email=email, phone=phone)
         db.session.add(new_employee)
         db.session.commit()
+        flash('עובד נוצר בהצלחה!')
+        return redirect(url_for('main.addEmployee'))
     return render_template('addsysadmin.html', form=form)
 
 
 @main.route('/addTask', methods=('GET', 'POST'))
 def addTask():
     form = TasksForm()
-    form.assignTo.choices = [(assginTo.id, assginTo.firstName) for assginTo in Employees.query.all()]
-    form.customer.choices = [(customer.id, customer.name) for customer in Customers.query.all()]
-    form.reportTo.choices = [(reportTo.id, reportTo.firstName) for reportTo in Employees.query.all()]
+    # form.assignTo.choices = [(assginTo.id, assginTo.firstName) for assginTo in Employees.query.all()]
+    # form.customer.choices = [(customer.id, customer.name) for customer in Customers.query.all()]
+    # form.reportTo.choices = [(reportTo.id, reportTo.firstName) for reportTo in Employees.query.all()]
+    assignQuery = Employees.query.order_by(Employees.firstName).all()
     if form.validate_on_submit():
+        # return '<h1>{}</h1>'.format(form.assignTo.data)
         description = form.description.data
-        customer = form.customer.data
-        deadline = form.deadline.data
-        reportTo = form.reportTo.data
-        assignTo = form.assignTo.data
-        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo )
+        customer = str(form.customer.data)
+        deadline = str(form.deadline.data)
+        reportTo = str(form.reportTo.data)
+        assignTo = str(form.assignTo.data)
+        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo)
+        #return '<h1>{}-{}-{}-{}-{}</h1>'.format(description, customer, deadline, reportTo, assignTo)
         db.session.add(new_task)
         db.session.commit()
-    return render_template('addtask.html', form=form)
+    return render_template('addtask.html', form=form )

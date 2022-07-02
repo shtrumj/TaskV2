@@ -20,14 +20,19 @@ def login():
         email = form.email.data
         form.email.data = ''
         password = form.password.data
-        password = generate_password_hash(password, 'sha256')
-        form.password.data = ''
+        #password = generate_password_hash(password, 'sha256')
+        # form.password.data = ''
         user = Users.query.filter_by(email=email).first()
-        if user:
+        if user.check_password(password) and user is not None:
             flash('התחברות בוצעה בהצלחה', category='success')
-            login_user(user, remember=True)
-            # session['username'] = user
-            return render_template('home.html', user=user)
+            login_user(user, remember=False)
+            next = request.args.get('next')
+            if next == None or not next[0]=='/':
+                flash('נא להתחבר!', category='danger')
+                next = url_for('main.home')
+
+            return redirect(next)
+            # return render_template('home.html', user=user)
         else:
             flash('שם משתמש וֿ.או ססמא לא נכונים', category='danger')
             return redirect(url_for('main.login'))
@@ -60,9 +65,6 @@ def register():
 @main.route('/home', methods=('GET', 'POST'))
 @login_required
 def home():
-    if "username" in session:
-        username = session["username"]
-        return f"<h1>{username}</h1>"
     return render_template('home.html')
 
 

@@ -7,16 +7,20 @@
 {% endblock %}
 
 {% block content %}
+<h1> המשימות שלי</h1>
+    {% block table %}
+    <table class="styled-table">
+    <thed>
+        <tr>
+            <th>שם הלקוח</th>
+            <th>תיאור המשימה</th>
+            <th>זמן ליעד</th>
+            <th>מנהל דיווח</th>
+        </tr>
+    </thed>
 
-{#    <h1> Hello {{ user.firstName}}</h1>#}
-{#    <h1>בית</h1>#}
-{# <div class="h-100 d-flex align-items-end flex-column flex-md-row  text-center text-md-end justify-content-end py-4 px-4 px-xl-5 bg-primary">#}
-{##}
-{#    <div id="footer" class="h-100 d-flex flex-column justify-content-end text-md-end  py-4 px-4 px-xl-5 bg-primary">#}
-{#            <!-- Copyright -->#}
-{#        <div class="text-white mb-3 mb-md-0">#}
-{#                Copyright SG-tech© 2022. All rights reserved.#}
-{#        </div>#}
-{#    </div>#}
-{# </div>#}
+
+    </table>
+
+{% endblock table %}
 {% endblock content %}

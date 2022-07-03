@@ -11,20 +11,42 @@
     {% block table %}
         <h3> שלום {{ session.username }} </h3>
     <table class="styled-table">
-    <thed>
+     <thead>
         <tr>
             <th>שם הלקוח</th>
             <th>תיאור המשימה</th>
             <th>זמן ליעד</th>
             <th>מנהל דיווח</th>
         </tr>
+     </thead>
+ <tbody>
+ {%- for row in tasks %}
+    <tr>
+       <td>
+           {{ row.customer}}
+       </td>
+           <td>
+           {{ row.description}}
+       </td>
+    </td>
+        <td>
+           {{ row.deadline}}
+       </td>
+            <td>
+           {{ row.reportTo}}
+       </td>
+    </tr>
 
-    </thed>
-    {%  for description in tasks %}
-    <p> {{ description.description }}</p>
-    {%  endfor %}
+ {%- endfor %}
 
-    </table>
+{# <tr>#}
+{# {%- for row in tasks %}#}
+{#       <td>{{ row.description}}</td>#}
+{# {%- endfor %}#}
+{# </tr>#}
+
+ </tbody>
+ </table>
 
 {% endblock table %}
 {% endblock content %}

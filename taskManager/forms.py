@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField, SelectField
 from wtforms.validators import DataRequired, length, EqualTo, Email
 from .extentions import db
-from taskManager.models import employees_names_query
 from wtforms_sqlalchemy.fields import QuerySelectField
 from taskManager.models import customer_query, employees_names_query, bosses_names_query
 import taskManager.routes

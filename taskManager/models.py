@@ -54,7 +54,7 @@ class Employees(db.Model):
         self.phone = phone
 
     def __repr__(self):
-        return self.firstName + ' ' + self.lastName
+        return str(self.id) + ".  " + self.firstName + " " + str(self.lastName)
 
 
 class Customers(db.Model):
@@ -94,6 +94,8 @@ class Tasks(db.Model):
         self.deadline = deadline
         self.reportTo = reportTo
         self.employee_id = employee_id
+
+
 
 
 def customer_query():

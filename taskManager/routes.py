@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from taskManager.models import Users, Customers, Employees, Tasks
 from wtforms import ValidationError
+import re
 from flask_login import login_user, login_required, logout_user, current_user
 from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm
 from taskManager.extentions import db, login_manager
@@ -30,12 +31,14 @@ def login():
             session["username"] = user.firstName
             session["email"] = user.email
             session["userid"] = user.id
-            next = request.args.get('next')
-            if next == None or not next[0]=='/':
-                flash('נא להתחבר!', category='danger')
-                next = url_for('main.home')
+            return  redirect('home')
+            # next = request.args.get('next')
+            # return '<h1>{}</h1>'.format(next)
+            # if next == None or not next[0]=='/':
+            #     flash('נא להתחבר!', category='danger')
+            #     next = url_for('main.home')
 
-            return redirect(next)
+            # return redirect(next)
             # return render_template('home.html', user=user)
         else:
             flash('שם משתמש וֿ.או ססמא לא נכונים', category='danger')
@@ -120,23 +123,16 @@ def addEmployee():
 @login_required
 def addTask():
     form = TasksForm()
-    # assignQuery = Employees.query.order_by(Employees.firstName).all()
     if form.validate_on_submit():
-        # return '<h1>{}</h1>'.format(form.assignTo.data)
         description = str(form.description.data)
         customer = str(form.customer.data)
         deadline = str(form.deadline.data)
         reportTo = str(form.reportTo.data)
-        assignTo = form.assignTo.data
-        employee_id = db.session.query(Employees.id).filter_by(id = assignTo.id).first()
-        typ2e = type(employee_id)
-        return '<h1>{}</h1>'.format(typ2e)
-
-        return '<h1>{}</h1>'.format(employee_id)
-        assignTo = str(assignTo)
-        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo, employee_id=employee_id)
-        #return '<h1>{}</h1>'.format(assignTo.id)
-        #return '<h1>Report to: {} </h1>'.format(reportTo)
+        assignTo = str(form.assignTo.data)
+        NassignTo = re.findall('[0-9]+', assignTo)
+        NassignToi = [eval(x) for x in NassignTo]
+        NassignToirb = NassignToi[0]
+        new_task = Tasks(description=description, customer=customer, deadline=deadline, reportTo=reportTo, assignTo=assignTo, employee_id=NassignToirb)
         db.session.add(new_task)
         db.session.commit()
         flash('משימה נוצרה בהצלחה!', category='success')

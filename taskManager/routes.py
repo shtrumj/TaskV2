@@ -75,9 +75,10 @@ def home():
     if 'username' in session:
         username = session['username']
         email = session['email']
-        table = Tasks.query.filter_by(assignTo=username).all()
-
-    return render_template('home.html', user=username, table=table)
+        employeeID = Employees.query.filter_by(email=email).first_or_404()
+        tasks = Tasks.query.filter_by(employee_id=employeeID.id).all()
+        # userTasks = Tasks.query.filter_by(employee_id=employeeID[0]).values(Tasks.description)
+    return render_template('home.html', employeeID=employeeID, tasks=tasks)
 
 
 @main.route('/addCustomer', methods=('GET', 'POST'))

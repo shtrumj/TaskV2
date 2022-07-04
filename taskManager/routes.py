@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
-from taskManager.models import Users, Customers, Employees, Tasks
+from taskManager.models import Users, Customers, Employees, Tasks, WorkReports
 from wtforms import ValidationError
 import re
 from datetime import datetime
@@ -160,6 +160,19 @@ def logout():
 
 
 @main.route('/report', methods=('GET', 'POST'))
-def WoirkReport():
+def WorkReport():
     form= WorkReportForm()
+    if form.validate_on_submit():
+        customer = str(form.customer.data)
+        client= str(form.client.data)
+        description = str(form.description.data)
+        classification = str(form.classification.data)
+        resolve = str(form.resolve.data)
+        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve)
+        db.session.add(new_report)
+        db.session.commit()
+        flash('דוח נשלח בהצלחה!', category='success')
+
+
+
     return render_template('WorkReport.html', form =form)

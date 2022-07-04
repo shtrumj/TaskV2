@@ -4,24 +4,33 @@
 
 {% block extracss %}
     <link href="../static/style.css" rel="stylesheet">
+    <link href="../static/table.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
+        <form method="POST" action="">
+     {{ form.hidden_tag() }}
     </br>
     {% block table %}
         <h3> שלום {{ session.username }} </h3>
-    <table class="styled-table">
-     <thead>
+        </br>
+        <h4>המשימות שלי:</h4>
+    <table class="table">
+     <thead class="thead-dark">
         <tr>
-            <th>שם הלקוח</th>
-            <th>תיאור המשימה</th>
-            <th>זמן ליעד</th>
-            <th>מנהל דיווח</th>
+            <th scope="col">הסתיים</th>
+            <th scope="col">שם הלקוח</th>
+            <th scope="col">תיאור המשימה</th>
+            <th scope="col">זמן ליעד</th>
+            <th scope="col">מנהל דיווח</th>
         </tr>
      </thead>
  <tbody>
  {%- for row in tasks %}
     <tr>
+        <td class="complete">
+            <input class="form-check-input {{ row.id }}" type="checkbox" value="{{ row.id }}" id="flexCheckDefault" name="task-checkbox">
+       </td>
        <td>
            {{ row.customer}}
        </td>
@@ -39,14 +48,19 @@
 
  {%- endfor %}
 
-{# <tr>#}
-{# {%- for row in tasks %}#}
-{#       <td>{{ row.description}}</td>#}
-{# {%- endfor %}#}
-{# </tr>#}
+
 
  </tbody>
  </table>
 
 {% endblock table %}
+    </br>
+    </br>
+
+        <div class="text-center">
+            {{ form.submit(class_="btn btn-primary btn-lg") }}
+        </div>
+    </form>
 {% endblock content %}
+
+<button type="button" class="btn btn-primary">Primary</button>

@@ -2,8 +2,9 @@ from flask import Blueprint, render_template, request, url_for, redirect, flash,
 from taskManager.models import Users, Customers, Employees, Tasks
 from wtforms import ValidationError
 import re
+from datetime import datetime
 from flask_login import login_user, login_required, logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit
 from taskManager.extentions import db, login_manager
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -72,13 +73,21 @@ def register():
 @main.route('/home', methods=('GET', 'POST'))
 @login_required
 def home():
+    form=HomeSubmit()
     if 'username' in session:
         username = session['username']
         email = session['email']
         employeeID = Employees.query.filter_by(email=email).first_or_404()
         tasks = Tasks.query.filter_by(employee_id=employeeID.id).all()
-        # userTasks = Tasks.query.filter_by(employee_id=employeeID[0]).values(Tasks.description)
-    return render_template('home.html', employeeID=employeeID, tasks=tasks)
+        if request.method == 'POST':
+            checks = request.form.getlist('task-checkbox')
+            task_to_delete  = Tasks.query.filter_by(id=checks[0]).first()
+            db.session.delete(task_to_delete)
+            db.session.commit()
+            return redirect(url_for('main.home'))
+            return '<h1>{}</h1>'.format(task_to_delete)
+
+    return render_template('home.html', employeeID=employeeID, tasks=tasks, form=form)
 
 
 @main.route('/addCustomer', methods=('GET', 'POST'))
@@ -128,6 +137,8 @@ def addTask():
         description = str(form.description.data)
         customer = str(form.customer.data)
         deadline = str(form.deadline.data)
+        dateconvert = datetime.strptime(deadline, '%Y-%m-%d')
+        deadline = dateconvert.strftime('%d/%m/%Y')
         reportTo = str(form.reportTo.data)
         assignTo = str(form.assignTo.data)
         NassignTo = re.findall('[0-9]+', assignTo)

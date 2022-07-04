@@ -56,3 +56,7 @@ class TasksForm(FlaskForm):
     deadline = DateField('תאריך יעד')
     reportTo = QuerySelectField('ממנה משימה', query_factory=bosses_names_query, allow_blank=True)
     submit = SubmitField('צור משימה')
+
+
+class HomeSubmit(FlaskForm):
+    submit = SubmitField('עדכון')

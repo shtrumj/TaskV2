@@ -96,6 +96,21 @@ class Tasks(db.Model):
         self.employee_id = employee_id
 
 
+class WorkReports(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer = db.Column(db.String(20))
+    client= db.Column(db.String(20))
+    description = db.Column(db.String(30))
+    classification = db.Column(db.String(20))
+    resolve = db.Column(db.String(150))
+
+    def __init__(self, customer, client, description,classification, resolve):
+        self.customer = customer
+        self.client = client
+        self.description = description
+        self.classification = classification
+        self.resolve = resolve
+
 
 
 def customer_query():

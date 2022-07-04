@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField, SelectField
+from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, length, EqualTo, Email
 from .extentions import db
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -60,3 +60,12 @@ class TasksForm(FlaskForm):
 
 class HomeSubmit(FlaskForm):
     submit = SubmitField('עדכון')
+
+
+class WorkReportForm(FlaskForm):
+    customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
+    client = StringField('שם המשתמש')
+    description = StringField('תאור הקריאה')
+    classification = SelectField('סוג התקלה', choices=[('בעיית תוכנה','בעיית תוכנה'),('בעיית חומרה','בעיית חומרה')])
+    resolve= TextAreaField('תיאור הפתרון')
+    submit = SubmitField('שלח דוח')

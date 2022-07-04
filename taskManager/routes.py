@@ -4,7 +4,7 @@ from wtforms import ValidationError
 import re
 from datetime import datetime
 from flask_login import login_user, login_required, logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm
 from taskManager.extentions import db, login_manager
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -157,3 +157,9 @@ def logout():
     logout_user()
     flash("בוצעה התנתקות", category="success")
     return redirect(url_for('main.login'))
+
+
+@main.route('/report', methods=('GET', 'POST'))
+def WoirkReport():
+    form= WorkReportForm()
+    return render_template('WorkReport.html', form =form)

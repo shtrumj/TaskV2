@@ -167,12 +167,12 @@ def WorkReport():
         client= str(form.client.data)
         description = str(form.description.data)
         classification = str(form.classification.data)
+        status = classification = str(form.status.data)
+        whatHasBeenDone = str(form.whatHasBeenDone.data)
         resolve = str(form.resolve.data)
-        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve)
+        reason = str(form.reason.data)
+        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve, status=status, reason=reason, whatHasBeenDone=whatHasBeenDone)
         db.session.add(new_report)
         db.session.commit()
         flash('דוח נשלח בהצלחה!', category='success')
-
-
-
-    return render_template('WorkReport.html', form =form)
+    return render_template('WorkReport.html', form=form)

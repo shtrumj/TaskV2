@@ -93,3 +93,6 @@ class HyperVisorForm(FlaskForm):
     submit = SubmitField('מארח חדש')
 
 
+class InfraView(FlaskForm):
+    customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
+    submit = SubmitField('בחרתי לקוח')

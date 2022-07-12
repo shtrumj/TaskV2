@@ -1,11 +1,14 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from flask import Blueprint, render_template, request, url_for, redirect, flash, session, jsonify
 from taskManager.models import Users, Customers, Employees, Tasks, WorkReports, Hypervisor
 from wtforms import ValidationError
 import re
+import json
 from datetime import datetime
 from flask_login import login_user, login_required, logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm, ReportView, HyperVisorForm
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm, ReportView, HyperVisorForm,InfraView
 from taskManager.extentions import db, login_manager
+from sqlalchemy.ext.serializer import loads, dumps
+
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -239,5 +242,8 @@ def addHyper():
 
 @main.route('/infra',methods=('GET','POST'))
 def infrastracture():
+    form = InfraView()
     hyper=Hypervisor.query.all()
-    return render_template('CustomerInfrastructure.html', hyper=hyper)
+    serialHyper = dumps(hyper)
+    # hyperjson = json.dumps(hyper.t)
+    return render_template('CustomerInfrastructure.html', form=form, serialHyper=serialHyper )

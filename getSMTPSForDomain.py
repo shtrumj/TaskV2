@@ -16,7 +16,7 @@ create_connection(db_file)
 
 def get_customers_ext_domain(conn):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM customers")
+    cur.execute("SELECT externalDomain FROM customers")
     rows = cur.fetchall()
     for row in rows:
         print(row)

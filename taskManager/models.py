@@ -132,3 +132,30 @@ def customer_query():
 def bosses_names_query():
     query = db.session.query(Employees).all()
     return query
+
+
+class Hypervisor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    createTime= db.Column(db.DateTime,  default=datetime.utcnow)
+    customer = db.Column(db.String(20))
+    ip_address= db.Column(db.String(20))
+    type = db.Column(db.String(30))
+    status = db.Column(db.String(25)) #active /not active
+    ilo_address = db.Column(db.String(20))
+    brand = db.Column(db.String(15))
+    model = db.Column(db.String(15))
+    warranty = db.Column(db.String(15))
+    physical_ram_in_GB = db.Column(db.String(15))
+    numberOfProcessors = db.Column(db.String(10))
+
+    def __init__(self, customer,ip_address, type, status, ilo_address, brand, model, warranty, physical_ram_in_GB, numberOfProcessors):
+        self.customer = customer
+        self.ip_address = ip_address
+        self.type = type
+        self.status = status
+        self.ilo_address = ilo_address
+        self.brand = brand
+        self.model= model
+        self.warranty = warranty
+        self.physical_ram_in_GB = physical_ram_in_GB
+        self.numberOfProcessors = numberOfProcessors

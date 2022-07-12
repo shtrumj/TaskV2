@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField, SelectField, TextAreaField
+from wtforms import SubmitField, StringField, PasswordField, EmailField, DateField, SelectField, TextAreaField,IntegerField
 from wtforms.validators import DataRequired, length, EqualTo, Email
 from .extentions import db
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -69,13 +69,27 @@ class ReportView(FlaskForm):
 class WorkReportForm(FlaskForm):
     customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
     client = StringField('שם המשתמש')
-    clientEmailAddress = StringField('כתובת דואר לקוח')
+    clientEmailAddress = StringField('כתובת דואר משתמש ארגונית')
     description = StringField('תאור הקריאה')
     classification = SelectField('סוג התקלה', choices=[('בעיית תוכנה','בעיית תוכנה'),('בעיית חומרה','בעיית חומרה')])
-    # status = SelectField('סטטוס', choices=[('בעיה נפתרה', 'בעיה נפתרה'), ('בעיה בטיפול', 'בעיה בטיפול'),('טרם החל טיפול','טרם החל טיפול')])
-    # status = SelectField('סטטוס', choices=[('טרם החל טיפול','טרם החל טיפול'),('בעיה נפתרה', 'בעיה נפתרה'), ('בעיה בטיפול', 'בעיה בטיפול')])
     status = SelectField('סטטוס', choices=[('1','טרם החל טיפול'),('2', 'בעיה נפתרה'), ('3', 'בעיה בטיפול')])
     resolve= TextAreaField('תיאור הפתרון')
     reason= TextAreaField('סיבה')
     whatHasBeenDone = TextAreaField('מה נעשה עד כה ?')
     submit = SubmitField('שלח דוח')
+
+
+class HyperVisorForm(FlaskForm):
+    customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
+    ip_address = StringField('כתובת IP')
+    ILO_address = StringField('כתובת ILO')
+    type = SelectField('סוג המארח', choices=[('1', 'Proxmox'), ('2', 'Hyper-V'), ('3', 'VMware')])
+    status = SelectField('סטטוס', choices=[('1','פעיל'),('2','מיועד לכיבוי'),('3','כבוי')])
+    brand = SelectField('יצרן',choices=[('1','HP'),('2','Dell'),('3','Lenovo')])
+    model = SelectField('דגם', choices=[('1','DL360'),('2','DL380'),('3','ML350')])
+    warranty = DateField('תאריך פקיעת אחריות')
+    physical_ram_in_GB = IntegerField('כמות זכרון פיזי ב GB')
+    numberOfProcessors = StringField('מספר מעבדים')
+    submit = SubmitField('מארח חדש')
+
+

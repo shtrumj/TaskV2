@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
-from taskManager.models import Users, Customers, Employees, Tasks, WorkReports
+from taskManager.models import Users, Customers, Employees, Tasks, WorkReports, Hypervisor
 from wtforms import ValidationError
 import re
 from datetime import datetime
 from flask_login import login_user, login_required, logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm, ReportView
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm, ReportView, HyperVisorForm
 from taskManager.extentions import db, login_manager
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -181,6 +181,31 @@ def WorkReport():
         return redirect((url_for('main.WorkReport')))
     return render_template('WorkReport.html', form=form )
 
+@main.route('/addWorkReport', methods=('GET', 'POST'))
+def addWorkReport():
+    username = session['username']
+    extDomains = Customers.query.all()
+    form= WorkReportForm()
+    if form.validate_on_submit():
+        customer = str(form.customer.data)
+        client= str(form.client.data)
+        description = str(form.description.data)
+        classification = str(form.classification.data)
+        status = str(form.status.data)
+        whatHasBeenDone = str(form.whatHasBeenDone.data)
+        clientEmailAddress = str(form.clientEmailAddress.data)
+        resolve = str(form.resolve.data)
+        reason = str(form.reason.data)
+        username = session['username']
+        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve, status=status, reason=reason, whatHasBeenDone=whatHasBeenDone, username=username, clientEmailAddress=clientEmailAddress)
+        db.session.add(new_report)
+        db.session.commit()
+        flash('דוח נשלח בהצלחה!', category='success')
+        return redirect((url_for('main.WorkReport')))
+    return render_template('AddWorkReport.html', form=form, extDomains=extDomains)
+
+
+
 
 @main.route('/Viewreport', methods=('GET', 'POST'))
 def ViewWorkReport():
@@ -188,3 +213,25 @@ def ViewWorkReport():
     username = session['username']
     Reports = WorkReports.query.all()
     return render_template('ViewWorkReplorts.html',Reports=Reports, form=form)
+
+
+@main.route('/AddHypervisor', methods=('GET','POST'))
+def addHyper():
+    form=HyperVisorForm()
+    if form.validate_on_submit():
+        customer = str(form.customer.data)
+        ip_address = str(form.ip_address.data)
+        ILO_address = str(form.ILO_address.data)
+        type = str(form.type.data)
+        status = str(form.status.data)
+        brand = str(form.brand.data)
+        model = str(form.model.data)
+        warranty = str(form.warranty.data)
+        physical_ram_in_GB = str(form.physical_ram_in_GB.data)
+        numberOfProcessors = form.numberOfProcessors.data
+        new_hypervisor = Hypervisor(customer=customer, ip_address=ip_address, ilo_address=ILO_address, type=type, status=status, brand=brand, model=model, warranty=warranty, physical_ram_in_GB=physical_ram_in_GB, numberOfProcessors=numberOfProcessors)
+        db.session.add(new_hypervisor)
+        db.session.commit()
+        flash('מארח  נוצר בהצלחה!', category='success')
+        return redirect((url_for('main.addHyper')))
+    return render_template('AddAnHypervisor.html', form=form)

@@ -235,3 +235,9 @@ def addHyper():
         flash('מארח  נוצר בהצלחה!', category='success')
         return redirect((url_for('main.addHyper')))
     return render_template('AddAnHypervisor.html', form=form)
+
+
+@main.route('/infra',methods=('GET','POST'))
+def infrastracture():
+    hyper=Hypervisor.query.all()
+    return render_template('CustomerInfrastructure.html', hyper=hyper)

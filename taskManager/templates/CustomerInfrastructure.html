@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-
+{% for server in hyper %}
+    <div id="server{{ loop.index}} class=servers"></div>
+{% endfor %}
 </body>
 </html>

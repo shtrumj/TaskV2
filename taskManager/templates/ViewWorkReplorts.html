@@ -22,7 +22,8 @@
             <th scope="col">שם משתמש</th>
             <th scope="col">תיאור התקלה</th>
             <th scope="col">סטטוס</th>
-            <th scope="col">מנהל דיווח</th>
+            <th scope="col">זמן יצירה</th>
+            <th scope="col">שם ממלא הדוח</th>
         </tr>
      </thead>
  <tbody>
@@ -42,7 +43,10 @@
            {{ row.status}}
        </td>
             <td>
-           {{ row.status}}
+           {{ row.createTime}}
+       </td>
+       <td>
+           {{ row.client}}
        </td>
     </tr>
 

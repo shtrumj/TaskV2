@@ -107,9 +107,10 @@ class WorkReports(db.Model):
     classification = db.Column(db.String(20))
     resolve = db.Column(db.String(150))
     reason = db.Column(db.String(150))
+    username = db.Column(db.String(25))
     whatHasBeenDone = db.Column(db.String(150))
 
-    def __init__(self, customer, client, description,classification, resolve, status, reason, whatHasBeenDone):
+    def __init__(self, customer, client, description,classification, resolve, status, reason, whatHasBeenDone, username):
         self.customer = customer
         self.client = client
         self.description = description
@@ -117,6 +118,7 @@ class WorkReports(db.Model):
         self.status = status
         self.resolve = resolve
         self.reason = reason
+        self.username = username
         self.whatHasBeenDone = whatHasBeenDone
 
 

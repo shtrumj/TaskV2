@@ -167,19 +167,21 @@ def WorkReport():
         client= str(form.client.data)
         description = str(form.description.data)
         classification = str(form.classification.data)
-        status = classification = str(form.status.data)
+        status = classification = str(form.status.)
         whatHasBeenDone = str(form.whatHasBeenDone.data)
         resolve = str(form.resolve.data)
         reason = str(form.reason.data)
-        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve, status=status, reason=reason, whatHasBeenDone=whatHasBeenDone)
+        username = session['username']
+        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve, status=status, reason=reason, whatHasBeenDone=whatHasBeenDone, username=username)
         db.session.add(new_report)
         db.session.commit()
         flash('דוח נשלח בהצלחה!', category='success')
-    return render_template('WorkReport.html', form=form)
+    return render_template('WorkReport.html', form=form )
 
 
 @main.route('/Viewreport', methods=('GET', 'POST'))
 def ViewWorkReport():
     form= ReportView()
+    username = session['username']
     Reports = WorkReports.query.all()
     return render_template('ViewWorkReplorts.html',Reports=Reports, form=form)

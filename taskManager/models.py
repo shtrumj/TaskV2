@@ -1,5 +1,6 @@
 from .extentions import db, login_manager
 from flask_login import UserMixin
+from datetime import datetime
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateTimeField
 from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -98,6 +99,7 @@ class Tasks(db.Model):
 
 class WorkReports(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    createTime= db.Column(db.DateTime,  default=datetime.utcnow)
     customer = db.Column(db.String(20))
     client= db.Column(db.String(20))
     description = db.Column(db.String(30))

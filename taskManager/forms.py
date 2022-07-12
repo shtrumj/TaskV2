@@ -62,6 +62,10 @@ class HomeSubmit(FlaskForm):
     submit = SubmitField('עדכון')
 
 
+class ReportView(FlaskForm):
+    submit = SubmitField('עדכון')
+
+
 class WorkReportForm(FlaskForm):
     customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
     client = StringField('שם המשתמש')

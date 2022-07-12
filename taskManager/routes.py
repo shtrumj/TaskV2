@@ -4,7 +4,7 @@ from wtforms import ValidationError
 import re
 from datetime import datetime
 from flask_login import login_user, login_required, logout_user, current_user
-from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm
+from taskManager.forms import Loginform, RegistrationForm, CustomersForm, EmployeeForm, TasksForm, HomeSubmit, WorkReportForm, ReportView
 from taskManager.extentions import db, login_manager
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -81,7 +81,7 @@ def home():
         tasks = Tasks.query.filter_by(employee_id=employeeID.id).all()
         if request.method == 'POST':
             checks = request.form.getlist('task-checkbox')
-            task_to_delete  = Tasks.query.filter_by(id=checks[0]).first()
+            task_to_delete = Tasks.query.filter_by(id=checks[0]).first()
             db.session.delete(task_to_delete)
             db.session.commit()
             return redirect(url_for('main.home'))
@@ -176,3 +176,10 @@ def WorkReport():
         db.session.commit()
         flash('דוח נשלח בהצלחה!', category='success')
     return render_template('WorkReport.html', form=form)
+
+
+@main.route('/Viewreport', methods=('GET', 'POST'))
+def ViewWorkReport():
+    form= ReportView()
+    Reports = WorkReports.query.all()
+    return render_template('ViewWorkReplorts.html',Reports=Reports, form=form)

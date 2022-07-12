@@ -20,6 +20,7 @@
         <tr>
             <th scope="col">שם הלקוח</th>
             <th scope="col">שם משתמש</th>
+            <th scope="col">כתובת דואר משתמש</th>
             <th scope="col">תיאור התקלה</th>
             <th scope="col">סטטוס</th>
             <th scope="col">זמן יצירה</th>
@@ -35,19 +36,29 @@
        <td>
            {{ row.client}}
        </td>
+        <td>
+           {{ row.clientEmailAddress}}
+       </td>
            <td>
            {{ row.description}}
        </td>
     </td>
         <td>
-           {{ row.status}}
+           {% if row.status =='2' %}
+             <h6>בעיה נפתרה</h6>
+            {%  elif row.status =='1'%}
+               <h5 style="color: red">טרם החל טיפול</h5>
+            {%  else %}
+              <h6>בעיה בטיפול</h6>
+            {% endif %}
        </td>
-            <td>
+        <td>
            {{ row.createTime}}
        </td>
-       <td>
-           {{ row.client}}
+        <td>
+           {{ row.username}}
        </td>
+
     </tr>
 
  {%- endfor %}

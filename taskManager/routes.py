@@ -161,21 +161,24 @@ def logout():
 
 @main.route('/report', methods=('GET', 'POST'))
 def WorkReport():
+    username = session['username']
     form= WorkReportForm()
     if form.validate_on_submit():
         customer = str(form.customer.data)
         client= str(form.client.data)
         description = str(form.description.data)
         classification = str(form.classification.data)
-        status = classification = str(form.status.)
+        status = str(form.status.data)
         whatHasBeenDone = str(form.whatHasBeenDone.data)
+        clientEmailAddress = str(form.clientEmailAddress.data)
         resolve = str(form.resolve.data)
         reason = str(form.reason.data)
         username = session['username']
-        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve, status=status, reason=reason, whatHasBeenDone=whatHasBeenDone, username=username)
+        new_report = WorkReports(customer=customer, client=client, description=description,classification=classification, resolve=resolve, status=status, reason=reason, whatHasBeenDone=whatHasBeenDone, username=username, clientEmailAddress=clientEmailAddress)
         db.session.add(new_report)
         db.session.commit()
         flash('דוח נשלח בהצלחה!', category='success')
+        return redirect((url_for('main.WorkReport')))
     return render_template('WorkReport.html', form=form )
 
 

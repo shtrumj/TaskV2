@@ -69,6 +69,7 @@ class ReportView(FlaskForm):
 class WorkReportForm(FlaskForm):
     customer = QuerySelectField('שם הלקוח', query_factory=customer_query, allow_blank=True)
     client = StringField('שם המשתמש')
+    clientEmailAddress = StringField('כתובת דואר לקוח')
     description = StringField('תאור הקריאה')
     classification = SelectField('סוג התקלה', choices=[('בעיית תוכנה','בעיית תוכנה'),('בעיית חומרה','בעיית חומרה')])
     # status = SelectField('סטטוס', choices=[('בעיה נפתרה', 'בעיה נפתרה'), ('בעיה בטיפול', 'בעיה בטיפול'),('טרם החל טיפול','טרם החל טיפול')])

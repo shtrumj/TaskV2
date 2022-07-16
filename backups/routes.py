@@ -9,8 +9,12 @@ from taskManager.forms import Loginform, RegistrationForm, CustomersForm, Employ
 from taskManager.extentions import db, login_manager
 from sqlalchemy.ext.serializer import loads, dumps
 
+from flask_session import Session
+from werkzeug.security import generate_password_hash, check_password_hash
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 main = Blueprint('main', __name__, template_folder='taskManager/templates', static_folder='taskManager/static')
+
 
 @main.route('/', methods=('GET', 'POST'))
 @main.route('/login', methods=('GET', 'POST'))
@@ -32,7 +36,14 @@ def login():
             session["email"] = user.email
             session["userid"] = user.id
             return  redirect('home')
+            # next = request.args.get('next')
+            # return '<h1>{}</h1>'.format(next)
+            # if next == None or not next[0]=='/':
+            #     flash('נא להתחבר!', category='danger')
+            #     next = url_for('main.home')
 
+            # return redirect(next)
+            # return render_template('home.html', user=user)
         else:
             flash('שם משתמש וֿ.או ססמא לא נכונים', category='danger')
             return redirect(url_for('main.login'))
@@ -65,26 +76,21 @@ def register():
 @main.route('/home', methods=('GET', 'POST'))
 @login_required
 def home():
-    form = HomeSubmit()
+    form=HomeSubmit()
     if 'username' in session:
         username = session['username']
         email = session['email']
         employeeID = Employees.query.filter_by(email=email).first_or_404()
-        tasks = Tasks.query.filter_by(employee_id=employeeID.id, status='משימה פתוחה').all()
-        closedTasks = Tasks.query.filter_by(employee_id=employeeID.id, status='משימה נסגרה').limit(1).all()
-        # if request.method == 'POST':
-        if form.validate_on_submit():
+        tasks = Tasks.query.filter_by(employee_id=employeeID.id).all()
+        if request.method == 'POST':
             checks = request.form.getlist('task-checkbox')
-            if not checks :
-                return redirect (url_for('main.home'))
-            else:
-                task_change_status = Tasks.query.filter_by(id=checks[0]).first()
-                task_change_status.status = 'משימה נסגרה'
-                db.session.commit()
-                return redirect(url_for('main.home'))
-                return '<h1>{}</h1>'.format(task_to_delete)
+            task_to_delete = Tasks.query.filter_by(id=checks[0]).first()
+            db.session.delete(task_to_delete)
+            db.session.commit()
+            return redirect(url_for('main.home'))
+            return '<h1>{}</h1>'.format(task_to_delete)
 
-    return render_template('home.html', employeeID=employeeID, tasks=tasks, form=form, closedTasks=closedTasks)
+    return render_template('home.html', employeeID=employeeID, tasks=tasks, form=form)
 
 
 @main.route('/addCustomer', methods=('GET', 'POST'))

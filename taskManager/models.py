@@ -87,14 +87,16 @@ class Tasks(db.Model):
     deadline = db.Column(db.String(12))
     reportTo = db.Column(db.String(20))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=False)
+    status = db.Column(db.String(20), nullable=True, default="פתוח")
 
-    def __init__(self, assignTo, description, customer, deadline, reportTo, employee_id):
+    def __init__(self, assignTo, description, customer, deadline, reportTo, employee_id, status):
         self.assignTo = assignTo
         self.description = description
         self.customer = customer
         self.deadline = deadline
         self.reportTo = reportTo
         self.employee_id = employee_id
+        self.status = status
 
 
 class WorkReports(db.Model):

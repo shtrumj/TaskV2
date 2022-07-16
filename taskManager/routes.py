@@ -71,18 +71,26 @@ def home():
         email = session['email']
         employeeID = Employees.query.filter_by(email=email).first_or_404()
         tasks = Tasks.query.filter_by(employee_id=employeeID.id, status='משימה פתוחה').all()
-        closedTasks = Tasks.query.filter_by(employee_id=employeeID.id, status='משימה נסגרה').limit(1).all()
+        closedTasks = Tasks.query.filter_by(employee_id=employeeID.id, status='משימה נסגרה').limit(3).all()
         # if request.method == 'POST':
         if form.validate_on_submit():
             checks = request.form.getlist('task-checkbox')
-            if not checks :
-                return redirect (url_for('main.home'))
-            else:
-                task_change_status = Tasks.query.filter_by(id=checks[0]).first()
-                task_change_status.status = 'משימה נסגרה'
-                db.session.commit()
+            closed = request.form.getlist('closetask-checkbox')
+            if not checks and not closed:
                 return redirect(url_for('main.home'))
-                return '<h1>{}</h1>'.format(task_to_delete)
+            else:
+                if not closed:
+                    task_change_status = Tasks.query.filter_by(id=checks[0]).first()
+                    task_change_status.status = 'משימה נסגרה'
+                    db.session.commit()
+                    return redirect(url_for('main.home'))
+                    return '<h1>{}</h1>'.format(task_to_delete)
+                else:
+                    task_change_status = Tasks.query.filter_by(id=closed[0]).first()
+                    task_change_status.status = 'משימה פתוחה'
+                    db.session.commit()
+                    return redirect(url_for('main.home'))
+                    return '<h1>{}</h1>'.format(task_to_delete)
 
     return render_template('home.html', employeeID=employeeID, tasks=tasks, form=form, closedTasks=closedTasks)
 

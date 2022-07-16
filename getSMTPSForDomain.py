@@ -1,7 +1,7 @@
 from taskManager.models import Users, Customers, Employees, Tasks, WorkReports
 import sqlite3
 import os
-
+import ldap
 
 def create_connection(db_file):
     conn = None
@@ -20,4 +20,3 @@ def get_customers_ext_domain(conn):
     rows = cur.fetchall()
     for row in rows:
         print(row)
-get_customers_ext_domain(conn=create_connection(db_file))

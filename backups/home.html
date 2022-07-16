@@ -45,14 +45,33 @@
            {{ row.reportTo}}
        </td>
     </tr>
-
  {%- endfor %}
-
-
-
  </tbody>
  </table>
 
+<tbody>
+ {%- for row in closedTasks %}
+    <tr>
+        <td class="complete">
+            <input class="form-check-input {{ row.id }}" type="checkbox" value="{{ row.id }}" id="flexCheckDefault" name="task-checkbox">
+       </td>
+       <td>
+           {{ row.customer}}
+       </td>
+           <td>
+           {{ row.description}}
+       </td>
+    </td>
+        <td>
+           {{ row.deadline}}
+       </td>
+            <td>
+           {{ row.reportTo}}
+       </td>
+    </tr>
+ {%- endfor %}
+ </tbody>
+ </table>
 {% endblock table %}
     </br>
     </br>
